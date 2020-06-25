@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\BotQuestionRepository;
 use App\Repository\KeyWordRepository;
+use App\Repository\SymptomRepository;
 use App\Service\Extractor;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,17 +26,28 @@ class ChatController extends AbstractController
      * @param BotQuestionRepository $botQuestionRepository
      * @param Extractor $extractor
      * @param KeyWordRepository $keyWordRepository
+     * @param SymptomRepository $symptomRepository
      * @return Response
      */
-    public function botQuestion (BotQuestionRepository $botQuestionRepository, Extractor $extractor, KeyWordRepository $keyWordRepository)
-    {
+    public function botQuestion (BotQuestionRepository $botQuestionRepository,
+                                 Extractor $extractor,
+                                 KeyWordRepository $keyWordRepository,
+                                 SymptomRepository $symptomRepository
+    ) {
         $hello = $botQuestionRepository->findOneBy(['Question' => 'Comment puis-je vous aider?']);
 
         if ($_POST){
             $question = $_POST['input'];
             $extract = $extractor->extractKeyWord($question, $keyWordRepository);
             dump($extract);
-            die();
+            $extract = $keyWordRepository->findOneBy(['Word' => $extract]);
+            dump($extract);
+
+            $symptoms = $symptomRepository->findBy(['keyword' => $extract->getId()]);
+            dump($symptoms);
+            $askSymptoms = $botQuestionRepository->findOneBy(['Question' => 'Quels sont vos symptômes ?'])->getQuestion();
+
+            return $this->render('Chat/index.html.twig', ['symptoms' => $symptoms, 'askSymptoms' => $askSymptoms]);
         }
 
 

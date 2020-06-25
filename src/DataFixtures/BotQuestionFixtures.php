@@ -18,6 +18,10 @@ class BotQuestionFixtures extends Fixture
         $manager->persist($botQuestion);
 
         $botQuestion = new BotQuestion();
+        $botQuestion->setQuestion('Quels sont vos symptômes ?');
+        $manager->persist($botQuestion);
+
+        $botQuestion = new BotQuestion();
         $botQuestion->setQuestion('Depuis combien de temps avez-vous mal?');
         $manager->persist($botQuestion);
 
