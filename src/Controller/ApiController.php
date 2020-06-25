@@ -93,11 +93,11 @@ class ApiController extends AbstractController
      * @Route("/API/update")
      *
      * @param EntityManagerInterface $em
+     * @param BodyLocationRepository $bodys
      * @return RedirectResponse
      */
     public function updateBodyLocation(EntityManagerInterface $em, BodyLocationRepository $bodys)
     {
-//        $response = $this->getBodyLocation('fr');
         $response = $this->getBodySubLocation(6, 'fr');
 
 
