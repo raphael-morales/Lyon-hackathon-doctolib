@@ -16,10 +16,20 @@ class SymptomFixtures extends Fixture implements DependentFixtureInterface
     {
         $symptom = new Symptom();
         $symptom->setName('migraine');
+        $symptom->setKeyword($this->getReference('keywords'));
+        $manager->persist($symptom);
+
+
+        $symptom = new Symptom();
         $symptom->setName('vertiges');
+        $symptom->setKeyword($this->getReference('keywords'));
+        $manager->persist($symptom);
+
+        $symptom = new Symptom();
         $symptom->setName('sensibilité à la lumière');
         $symptom->setKeyword($this->getReference('keywords'));
         $manager->persist($symptom);
+
         $this->addReference('symptom', $symptom);
         $manager->flush();
     }
@@ -28,7 +38,7 @@ class SymptomFixtures extends Fixture implements DependentFixtureInterface
      * This method must return an array of fixtures classes
      * on which the implementing class depends on
      *
-     * @return class-string[]
+     * @return string[] class-string[]
      */
     public function getDependencies()
     {

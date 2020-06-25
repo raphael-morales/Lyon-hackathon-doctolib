@@ -15,9 +15,14 @@ class BotQuestionFixtures extends Fixture
     {
         $botQuestion = new BotQuestion();
         $botQuestion->setQuestion('Comment puis-je vous aider?');
+        $manager->persist($botQuestion);
+
+        $botQuestion = new BotQuestion();
         $botQuestion->setQuestion('Depuis combien de temps avez-vous mal?');
         $manager->persist($botQuestion);
+
         $this->addReference('botQuestion', $botQuestion);
+
         $manager->flush();
     }
 }
