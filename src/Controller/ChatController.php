@@ -39,12 +39,9 @@ class ChatController extends AbstractController
         if ($_POST){
             $question = $_POST['input'];
             $extract = $extractor->extractKeyWord($question, $keyWordRepository);
-            dump($extract);
             $extract = $keyWordRepository->findOneBy(['Word' => $extract]);
-            dump($extract);
 
             $symptoms = $symptomRepository->findBy(['keyword' => $extract->getId()]);
-            dump($symptoms);
             $askSymptoms = $botQuestionRepository->findOneBy(['Question' => 'Quels sont vos symptômes ?'])->getQuestion();
 
             return $this->render('Chat/index.html.twig', ['symptoms' => $symptoms, 'askSymptoms' => $askSymptoms]);
