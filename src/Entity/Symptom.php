@@ -20,19 +20,18 @@ class Symptom
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Name;
+    private $name;
 
     /**
-     * @ORM\OneToOne(targetEntity=Specialities::class, inversedBy="symptom", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\Column(type="integer")
      */
-    private $specialities;
+    private $API_Id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=KeyWord::class, inversedBy="symptoms")
+     * @ORM\ManyToOne(targetEntity=BodySublocation::class, inversedBy="symptoms")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $keyword;
+    private $bodySublocation;
 
     public function getId(): ?int
     {
@@ -41,36 +40,36 @@ class Symptom
 
     public function getName(): ?string
     {
-        return $this->Name;
+        return $this->name;
     }
 
-    public function setName(string $Name): self
+    public function setName(string $name): self
     {
-        $this->Name = $Name;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getSpecialities(): ?Specialities
+    public function getAPIId(): ?int
     {
-        return $this->specialities;
+        return $this->API_Id;
     }
 
-    public function setSpecialities(Specialities $specialities): self
+    public function setAPIId(int $API_Id): self
     {
-        $this->specialities = $specialities;
+        $this->API_Id = $API_Id;
 
         return $this;
     }
 
-    public function getKeyword(): ?KeyWord
+    public function getBodySublocation(): ?BodySublocation
     {
-        return $this->keyword;
+        return $this->bodySublocation;
     }
 
-    public function setKeyword(?KeyWord $keyword): self
+    public function setBodySublocation(?BodySublocation $bodySublocation): self
     {
-        $this->keyword = $keyword;
+        $this->bodySublocation = $bodySublocation;
 
         return $this;
     }

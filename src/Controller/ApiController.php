@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\BodyLocation;
 use App\Entity\BodySublocation;
+use App\Entity\Symptom;
 use App\Repository\BodyLocationRepository;
+use App\Repository\BodySublocationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -89,18 +91,14 @@ class ApiController extends AbstractController
         return json_decode($response);
     }
 
-    /**
-     * @return mixed
-     * @Route("/apitest")
-     */
-    public function getSymptomsByBodySubLocation(): Response
+    public function getSymptomsByBodySubLocation($id): array
     {
         $gender = 'man';
 
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://priaid-symptom-checker-v1.p.rapidapi.com/symptoms/15/$gender?language=fr-fr",
+            CURLOPT_URL => "https://priaid-symptom-checker-v1.p.rapidapi.com/symptoms/$id/$gender?language=fr-fr",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_ENCODING => "",
@@ -122,33 +120,31 @@ class ApiController extends AbstractController
         if ($err) {
             echo "cURL Error #:" . $err;
         }
-        dump(json_decode($response));
-        die();
 
-        return $this->render('API/index.html.twig');
+        return json_decode($response);
     }
 
     /**
      * @Route("/API/update")
      *
      * @param EntityManagerInterface $em
-     * @param BodyLocationRepository $bodys
+     * @param BodySublocationRepository $bodys
      * @return RedirectResponse
      */
-    public function updateBodyLocation(EntityManagerInterface $em, BodyLocationRepository $bodys)
+    public function updateBodyLocation(EntityManagerInterface $em, BodySublocationRepository $bodys)
     {
-        $response = $this->getBodySubLocation(6, 'fr');
+        $response = $this->getSymptomsByBodySubLocation(21);
 
 
         foreach ($response as $location) {
 
-//            $bodyLocation = new BodyLocation();
-            $bodySubLocation = new BodySublocation();
 
-            $bodySubLocation->setAPIId($location->ID);
-            $bodySubLocation->setName($location->Name);
-            $bodySubLocation->setBodyLocation($bodys->findOneBy(['API_Id' => 6]));
-            $em->persist($bodySubLocation);
+            $symptom = new Symptom();
+
+            $symptom->setAPIId($location->ID);
+            $symptom->setName($location->Name);
+            $symptom->setBodySublocation($bodys->findOneBy(['API_Id' => 21]));
+            $em->persist($symptom);
         }
         $em->flush();
 

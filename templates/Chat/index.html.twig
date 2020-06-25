@@ -1,22 +1,48 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {% if hello is defined %}
-        <h1>{{hello}}</h1>
-    {% endif %}
+    <main>
+        {% if hello is defined %}
+            <h1>{{hello}}</h1>
+        {% endif %}
 
-    {% if askSymptoms is defined %}
-        <h2>{{ askSymptoms }}</h2>
+        {% if bodyLocations is defined %}
+            <form method="post">
+                {% for location in bodyLocations  %}
+{#                    <label>  {{ location.name}}                  </label>#}
 
-        <ul>
-            {% for symptom in symptoms %}
-                <li>{{ symptom.name }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
+                    <input type="submit" value="{{ location.name }}" name="response">
+                {% endfor %}
+            </form>
+        {% endif %}
 
-    <form method="post">
-        <input type="text" name="input">
-        <button type="submit"></button>
-    </form>
+        {% if subLocations is defined %}
+            <h2>Choisissez une zone plus précise svp</h2>
+            <form action="" method="post">
+                {% for location in subLocations %}
+                    <input type="submit" value="{{ location.name }}" name="response2">
+                {% endfor %}
+            </form>
+        {% endif %}
+
+        {% if symptoms is defined %}
+            <h2>Choisissez vos symptômes svp</h2>
+            <form action="" method="post">
+                {% for symptom in symptoms %}
+                    <div>
+                        <input type="checkbox" name="{{ symptom.name }}" id="{{ symptom.name }}" value="{{ symptom.id }}">
+                        <label for="{{ symptom.name }}">{{ symptom.name }}</label>
+                    </div>
+                {% endfor %}
+                <button type="submit"></button>
+
+            </form>
+        {% endif %}
+
+        <form method="post">
+            <input type="text" name="input">
+            <button type="submit"></button>
+        </form>
+
+    </main>
 {% endblock %}

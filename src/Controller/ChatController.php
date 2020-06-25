@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\BodyLocationRepository;
+use App\Repository\BodySublocationRepository;
 use App\Repository\BotQuestionRepository;
 use App\Repository\KeyWordRepository;
 use App\Repository\SymptomRepository;
@@ -23,20 +25,20 @@ class ChatController extends AbstractController
 
     /**
      * @Route("/hello")
-     * @param BotQuestionRepository $botQuestionRepository
-     * @param Extractor $extractor
-     * @param KeyWordRepository $keyWordRepository
      * @param SymptomRepository $symptomRepository
+     * @param BodyLocationRepository $bodyLocationRepository
+     * @param BodySublocationRepository $bodySublocationRepository
      * @return Response
      */
-    public function botQuestion (BotQuestionRepository $botQuestionRepository,
-                                 Extractor $extractor,
-                                 KeyWordRepository $keyWordRepository,
-                                 SymptomRepository $symptomRepository
+    public function botQuestion (SymptomRepository $symptomRepository,
+                                 BodyLocationRepository $bodyLocationRepository,
+                                 BodySublocationRepository $bodySublocationRepository
     ) {
-        $hello = $botQuestionRepository->findOneBy(['Question' => 'Comment puis-je vous aider?']);
+        $hello = 'Où avez vous mal ? [Body Location]';
 
-        if ($_POST){
+        $bodyLocations = $bodyLocationRepository->findAll();
+
+/*        if ($_POST) {
             $question = $_POST['input'];
             $extract = $extractor->extractKeyWord($question, $keyWordRepository);
             $extract = $keyWordRepository->findOneBy(['Word' => $extract]);
@@ -45,6 +47,25 @@ class ChatController extends AbstractController
             $askSymptoms = $botQuestionRepository->findOneBy(['Question' => 'Quels sont vos symptômes ?'])->getQuestion();
 
             return $this->render('Chat/index.html.twig', ['symptoms' => $symptoms, 'askSymptoms' => $askSymptoms]);
+        }*/
+
+        if ($_POST) {
+            if (isset($_POST['response'])) {
+                $location = $_POST['response'];
+                $id = $bodyLocationRepository->findOneBy(['name'=> $location])->getId();
+                $subLocations = $bodySublocationRepository->findBy(['bodyLocation' => $id ]);
+
+                return $this->render('Chat/index.html.twig', ['subLocations'=> $subLocations]);
+            }
+
+            if (isset($_POST['response2'])) {
+                $subloc = $_POST['response2'];
+                $id = $bodySublocationRepository->findOneBy(['name' => $subloc]);
+                $symptoms = $symptomRepository->findBy(['bodySublocation' => $id]);
+
+                return $this->render('Chat/index.html.twig', ['symptoms'=> $symptoms]);
+
+            }
         }
 
 
@@ -52,7 +73,8 @@ class ChatController extends AbstractController
 
 
         return $this->render('Chat/index.html.twig', [
-            'hello' => $hello->getQuestion()
+            'hello' => $hello,
+            'bodyLocations' => $bodyLocations
         ]);
     }
 }

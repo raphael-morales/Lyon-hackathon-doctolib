@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BodySublocationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -32,6 +34,16 @@ class BodySublocation
      * @ORM\JoinColumn(nullable=false)
      */
     private $bodyLocation;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Symptom::class, mappedBy="bodySublocation")
+     */
+    private $symptoms;
+
+    public function __construct()
+    {
+        $this->symptoms = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -70,6 +82,37 @@ class BodySublocation
     public function setBodyLocation(?BodyLocation $bodyLocation): self
     {
         $this->bodyLocation = $bodyLocation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Symptom[]
+     */
+    public function getSymptoms(): Collection
+    {
+        return $this->symptoms;
+    }
+
+    public function addSymptom(Symptom $symptom): self
+    {
+        if (!$this->symptoms->contains($symptom)) {
+            $this->symptoms[] = $symptom;
+            $symptom->setBodySublocation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSymptom(Symptom $symptom): self
+    {
+        if ($this->symptoms->contains($symptom)) {
+            $this->symptoms->removeElement($symptom);
+            // set the owning side to null (unless already changed)
+            if ($symptom->getBodySublocation() === $this) {
+                $symptom->setBodySublocation(null);
+            }
+        }
 
         return $this;
     }
