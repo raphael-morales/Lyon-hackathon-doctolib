@@ -1,48 +1,76 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <main>
+    <main class="container-fluid">
         {% if hello is defined %}
             <h1>{{hello}}</h1>
         {% endif %}
 
-        {% if bodyLocations is defined %}
-            <form method="post">
-                {% for location in bodyLocations  %}
-{#                    <label>  {{ location.name}}                  </label>#}
-
-                    <input type="submit" value="{{ location.name }}" name="response">
-                {% endfor %}
-            </form>
-        {% endif %}
+            {% if bodyLocations is defined %}
+                <form method="post" >
+                    {% for location in bodyLocations  %}
+                    <div>
+                        <input type="submit" value="{{ location.name }}" name="response">
+                    </div>
+                    {% endfor %}
+                </form>
+            {% endif %}
 
         {% if subLocations is defined %}
-            <h2>Choisissez une zone plus précise svp</h2>
+            <h1>Choisissez une zone plus précise svp</h1>
             <form action="" method="post">
                 {% for location in subLocations %}
-                    <input type="submit" value="{{ location.name }}" name="response2">
+                    <div>
+                        <input type="submit" value="{{ location.name }}" name="response2">
+                    </div>
                 {% endfor %}
             </form>
         {% endif %}
 
         {% if symptoms is defined %}
-            <h2>Choisissez vos symptômes svp</h2>
-            <form action="" method="post">
+            <h1>Quels sont vos symptômes ?</h1>
+            <form method="post" id="symptoms">
                 {% for symptom in symptoms %}
-                    <div>
-                        <input type="checkbox" name="{{ symptom.name }}" id="{{ symptom.name }}" value="{{ symptom.id }}">
-                        <label for="{{ symptom.name }}">{{ symptom.name }}</label>
+                    <div class="row">
+                        <div class="col-12">
+                            <input type="checkbox" name="{{ symptom.name }}" id="{{ symptom.name }}" value="{{ symptom.id }}" class="form-control">
+                            <label for="{{ symptom.name }}">{{ symptom.name }}</label>
+                        </div>
                     </div>
                 {% endfor %}
-                <button type="submit"></button>
+                <button type="submit" class="btn-lg">Rechercher des praticiens</button>
 
             </form>
         {% endif %}
 
-        <form method="post">
-            <input type="text" name="input">
-            <button type="submit"></button>
-        </form>
+        {% if specialists is defined %}
+            <h1>D'après vos résultats, voici mes recommandations <br> Il ne vous reste plus qu'à prendre RDV sur Doctolib ! </h1>
+            <form action="" method="post" id="specialists">
+                {% for specialist in specialists %}
+                    <div>
+                        <input type="submit" value="{{ specialist.Name }}" name="response3">
+                        <label for="">{{ specialist.Accuracy|round(1,'ceil') }} %</label>
+                    </div>
+                {% endfor %}
+            </form>
+
+{#
+            <ul>
+                {% for specialist in specialists %}
+                    <li>{{ specialist.Name }} - Probabilité : {{ specialist.Accuracy }} %</li>
+                {% endfor %}
+            </ul>
+#}
+        {% endif %}
 
     </main>
 {% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(function () {
+
+        });
+    </script>
+{% endblock %}
+

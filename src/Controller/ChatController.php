@@ -34,7 +34,8 @@ class ChatController extends AbstractController
                                  BodyLocationRepository $bodyLocationRepository,
                                  BodySublocationRepository $bodySublocationRepository
     ) {
-        $hello = 'Où avez vous mal ? [Body Location]';
+        $hello = "Bonjour, je suis Doctobot.\n Je peux vous aider à trouver un spécialiste adapté à votre besoin, pour cela j'ai besoin de quelques informations.
+         \n\n Pour commencer, où se situent vos symptômes ?";
 
         $bodyLocations = $bodyLocationRepository->findAll();
 
@@ -49,6 +50,7 @@ class ChatController extends AbstractController
             return $this->render('Chat/index.html.twig', ['symptoms' => $symptoms, 'askSymptoms' => $askSymptoms]);
         }*/
 
+
         if ($_POST) {
             if (isset($_POST['response'])) {
                 $location = $_POST['response'];
@@ -56,15 +58,21 @@ class ChatController extends AbstractController
                 $subLocations = $bodySublocationRepository->findBy(['bodyLocation' => $id ]);
 
                 return $this->render('Chat/index.html.twig', ['subLocations'=> $subLocations]);
-            }
-
-            if (isset($_POST['response2'])) {
+            } elseif (isset($_POST['response2'])) {
                 $subloc = $_POST['response2'];
                 $id = $bodySublocationRepository->findOneBy(['name' => $subloc]);
                 $symptoms = $symptomRepository->findBy(['bodySublocation' => $id]);
 
                 return $this->render('Chat/index.html.twig', ['symptoms'=> $symptoms]);
 
+            } else {
+                $symptoms = [];
+                foreach ($_POST as $check) {
+                    array_push($symptoms, $check);
+                }
+                $specialists = ApiController::getSpecialists($symptoms);
+
+                return $this->render('Chat/index.html.twig', ['specialists'=> $specialists]);
             }
         }
 
