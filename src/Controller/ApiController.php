@@ -150,7 +150,7 @@ class ApiController extends AbstractController
 
             $subloc->setAPIId($location->ID);
             $subloc->setName($location->Name);
-            $subloc->setBodyLocation($bodyLocs->findOneBy(['id' => 6]));
+            $subloc->setBodyLocation(6);
             $em->persist($subloc);
         }
 
