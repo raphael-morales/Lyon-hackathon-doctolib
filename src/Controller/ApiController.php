@@ -129,6 +129,7 @@ class ApiController extends AbstractController
      *
      * @param EntityManagerInterface $em
      * @param BodySublocationRepository $bodys
+     * @param BodyLocationRepository $bodyLocs
      * @return RedirectResponse
      */
     public function updateBodyLocation(EntityManagerInterface $em, BodySublocationRepository $bodys, BodyLocationRepository $bodyLocs)
@@ -150,7 +151,7 @@ class ApiController extends AbstractController
 
             $subloc->setAPIId($location->ID);
             $subloc->setName($location->Name);
-            $subloc->setBodyLocation(6);
+            $subloc->setBodyLocation($bodyLocs->findOneBy(['API_Id'=> 6]));
             $em->persist($subloc);
         }
 
