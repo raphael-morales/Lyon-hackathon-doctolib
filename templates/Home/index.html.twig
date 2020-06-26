@@ -1,5 +1,101 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>doctolib</h1>
+<div class="head_1">
+    <p>Doctobot</p>
+</div>
+<div id="redirect" class="chatbox" ng-app="chatBotApp" ng-controller="ChatBotController">
+    <div class="chatlogs">
+        <div style='background: #fcb14a; order:-1; border-radius:10px; width:100%; height:50px; text-align:center; color:white; padding-top: 10px;'>
+            <H4>Bonjour, Je suis doctobot. Je suis la pour vous conseiller un spécialiste</H4></div>
+        <div class="chat user">
+            <div class="user_logo">
+                <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/8/88/Mini-Robot.png" width="70px" alt="">
+            </div>
+            <div id="chatbot">
+                <span class="chat_message"></span>
+            </div>
+        </div>
+        <div class="chat bot">
+            <div class="user_logo">
+                <img src="https://img.icons8.com/plasticine/2x/user.png" width="65px" height="55px" alt="">
+            </div>
+
+            <div class="chat_message">
+                <span id="user"></span>
+            </div>
+        </div>
+        <div class="chat_form">
+            <input id="messages" type="text" placeholder="taping..."/>
+        </div>
+    </div>
 {% endblock %}
+
+{% block javascripts %}
+    <script>
+        window.setInterval(function() {
+            var elem =
+                document.getElementById("chatbot");
+            //elem.scrollTop = elem.scrollHeight;
+        }, 500);
+
+        document.addEventListener("keyup", function(e) {
+            if (e.keyCode === 13) {
+                reply();
+            }
+        });
+
+        function reply() {
+            var input = document.getElementById("messages").value;
+            var chatbox = document.getElementById("chatbot");
+            var userInput = input.toUpperCase();
+
+            chatbox.innerHTML += "<br/> <span style='color: red;'></span> " + "<div style='background: #fcb14a; order:-1; border-radius:50px; width:100%; height:50px; text-align:center; padding-top: 10px;'>" + input + "</div>";
+
+
+            var vocab = ["BONJOUR", "TETE", "SEMAINE", "FEMME", "HOMME", "ANS", "PEAU"];
+
+            var ans = [
+                "<div style='background: #fcb14a; order:-1; border-radius:50px; width:100%; height:50px; text-align:center;padding-top: 10px;'>Hey, Où avez-vous mal?</div>",
+
+                "<div style='background: #fcb14a; order:-1; border-radius:50px; width:100%; height:50px; text-align:center;padding-top: 10px;'>Depuis combien de temps avez-vous ces douleurs?</div>",
+
+                "<div style='background: #fcb14a; order:-1; border-radius:50px; width:100%; height:50px; text-align:center; padding-top: 10px;'>Etes-vous une femme ou un homme?</div>",
+
+                "<div style='background: #fcb14a; order:-1; border-radius:50px; width:100%; height:50px; text-align:center; padding-top: 10px;'>Quel est vôtre âge?</div>",
+
+                "<div style='background: #fcb14a; order:-1; border-radius:50px; width:100%; height:50px; text-align:center; padding-top: 10px;'>Quel est vôtre âge?</div>",
+
+                "<div style='background: #fcb14a; order:-1; border-radius:50px; width:100%; height:50px; text-align:center; padding-top: 10px;'>Avez-vous rencontré d'autres symptômes?</div>",
+
+                "<div style='background: #fcb14a; order:-1; border-radius:50px; width:100%; height:50px; text-align:center; padding-top: 10px;'>Je vous conseil de vous dirigez vers un dermatologue, voici le lien des dermatologues proche de chez vous : <a href='http://www.doctolib.fr/dermatologue/lyon-69007'>http://www.doctolib.fr/dermatologue/lyon-69007</a></div>"
+            ];
+
+            i = 0;
+            while (i < vocab.length) {
+                var mb = "<br/><span style='color: purple;'></span> ";
+                var n = userInput.includes(vocab[i]);
+
+                if (n === true) {
+                    setTimeout(function() {
+                        //your code to be executed after 1 second
+                        chatbox.innerHTML += mb + ans[i];
+                    }, 1500);
+                    break;
+                }
+
+                i++;
+
+                if (n === false && i === vocab.length) {
+                    setTimeout(function() {
+                        //your code to be executed after 1 second
+                        chatbox.innerHTML += mb + "<div style='background: #fcb14a; order:-1; border-radius:50px; width:100%; height:50px; text-align:center; padding-top: 10px;'>" + "I don't understand...please try again!" + "</div>";
+                    }, 1500);
+                }
+            }
+            document.getElementById("messages").value = '';
+        }
+    </script>
+
+{% endblock %}
+

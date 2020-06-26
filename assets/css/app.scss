@@ -1,5 +1,103 @@
 @import "~bootstrap/scss/bootstrap";
 
-body {
-    background-color: lightgray;
+*
+{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+body
+{
+    background:whitesmoke;
+    z-index: -10;
+}
+.head_1 {
+    background-color: cadetblue;
+    height: 100px;
+    text-align: center;
+    color: white;
+    padding-top: 30px;
+    font-size: 40px;
+}
+.chatbox
+{
+    width:90%;
+    height: 400px;
+    background:cadetblue;
+    padding: 25px;
+    margin:60px auto;
+    box-shadow: 3px 3px #ccc;
+    z-index: -1;
+    border-radius: 10px;
+    overflow-y: scroll;
+    scrollbar-color: rebeccapurple green;
+    scrollbar-width: thin;
+}
+.chatlogs
+{
+    padding:10px;
+    width:100%;
+    height:450px;
+    margin-bottom: 20px;
+}
+.chat
+{
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    margin-bottom: 40px;
+}
+.chat .user_logo
+{
+    width: 65px;
+    height: 65px;
+    background: #ccc;
+    border-radius:50%;
+}
+.chat #chatbot
+{
+    width:80%;
+    height: 50px;
+    padding: 15px;
+    margin:5px 10px 0;
+    border-radius: 50px;
+    color:white;
+    font-size: 18px;
+}
+.chat_form
+{
+    margin-top: 80px;
+    margin-left: 40px;
+    display: flex;
+    align-items: flex-start;
+}
+.chat_form input
+{
+    position : fixed;
+    background: #fbfbfb;
+    width:72%;
+    height:55px;
+    border:3px solid white;
+    border-radius: 10px;
+    padding:10px;
+    font-size: 18px;
+}
+.head
+{
+    background-color: black;
+    color:white;
+    width: 100%;
+    height: 80px;
+    font-size: 50px;
+    padding: 10px;
+}
+.head p
+{
+    align-items: center;
+    margin-left: 150px;
+    text-transform: capitalize;
+}
+#message
+{
+    background-color: purple;
 }
