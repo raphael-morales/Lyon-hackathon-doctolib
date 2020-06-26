@@ -131,19 +131,37 @@ class ApiController extends AbstractController
      * @param BodySublocationRepository $bodys
      * @return RedirectResponse
      */
-    public function updateBodyLocation(EntityManagerInterface $em, BodySublocationRepository $bodys)
+    public function updateBodyLocation(EntityManagerInterface $em, BodySublocationRepository $bodys, BodyLocationRepository $bodyLocs)
     {
-        $response = $this->getSymptomsByBodySubLocation(21);
-
+        $response = $this->getBodyLocation('fr');
+        $response2 = $this->getBodySubLocation(6, 'fr');
+        $response3 = $this->getSymptomsByBodySubLocation(23);
 
         foreach ($response as $location) {
+            $bodyLocation = new BodyLocation();
+
+            $bodyLocation->setAPIId($location->ID);
+            $bodyLocation->setName($location->Name);
+            $em->persist($bodyLocation);
+        }
+
+        foreach ($response2 as $location) {
+            $subloc = new BodySublocation();
+
+            $subloc->setAPIId($location->ID);
+            $subloc->setName($location->Name);
+            $subloc->setBodyLocation($bodyLocs->findOneBy(['id' => 6]));
+            $em->persist($subloc);
+        }
 
 
+
+        foreach ($response3 as $location) {
             $symptom = new Symptom();
 
             $symptom->setAPIId($location->ID);
             $symptom->setName($location->Name);
-            $symptom->setBodySublocation($bodys->findOneBy(['API_Id' => 21]));
+            $symptom->setBodySublocation($bodys->findOneBy(['API_Id' => 23]));
             $em->persist($symptom);
         }
         $em->flush();
