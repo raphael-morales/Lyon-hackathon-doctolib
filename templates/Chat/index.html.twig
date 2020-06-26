@@ -6,16 +6,17 @@
             <h1>{{hello}}</h1>
         {% endif %}
 
+        <div id="locations">
             {% if bodyLocations is defined %}
                 <form method="post" >
                     {% for location in bodyLocations  %}
-                    <div>
-                        <input type="submit" value="{{ location.name }}" name="response">
-                    </div>
+                        <div>
+                            <input type="submit" value="{{ location.name }}" name="response">
+                        </div>
                     {% endfor %}
                 </form>
             {% endif %}
-
+        </div>
         {% if subLocations is defined %}
             <h1>Choisissez une zone plus précise svp</h1>
             <form action="" method="post">
@@ -67,10 +68,10 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script>
-        $(function () {
+{#    <script>#}
+{#        $(function () {#}
 
-        });
-    </script>
+{#        });#}
+{#    </script>#}
 {% endblock %}
 

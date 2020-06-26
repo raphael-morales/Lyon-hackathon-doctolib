@@ -63,9 +63,13 @@ main {
         }
     }
 
-    #symptoms {
+    #sublocations {
+        display: none;
+    }
 
-        display: block;
+    #symptoms {
+        display: none;
+
 
         .form-control {
             width: 15%;
@@ -92,6 +96,8 @@ main {
     }
 
     #specialists {
+        display: none;
+
         div {
             display: flex;
             justify-content: space-between;

@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <main class="container-fluid">
+        {% if hello is defined %}
+            <h1>{{hello}}</h1>
+        {% endif %}
+
+        <div id="locations">
+            {% if bodyLocations is defined %}
+                <form method="post" >
+                    {% for location in bodyLocations  %}
+                        <div>
+                            <input type="submit" value="{{ location.name }}" name="response">
+                        </div>
+                    {% endfor %}
+                </form>
+            {% endif %}
+        </div>
+
+        <section id="sublocations">
+            {% if subLocations is defined %}
+                <h1>Choisissez une zone plus précise svp</h1>
+                <form action="" method="post">
+                    {% for location in subLocations %}
+                        <div>
+                            <input type="submit" value="{{ location.name }}" name="response2">
+                        </div>
+                    {% endfor %}
+                </form>
+            {% endif %}
+        </section>
+
+        <section id="symptoms">
+            {% if symptoms is defined %}
+                <h1>Quels sont vos symptômes ?</h1>
+                <form id="symptom">
+                    {% for symptom in symptoms %}
+                        <div class="row">
+                            <div class="col-12">
+                                <input type="checkbox" name="{{ symptom.name }}" id="{{ symptom.name }}" value="{{ symptom.id }}" class="form-control">
+                                <label for="{{ symptom.name }}">{{ symptom.name }}</label>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <button type="button" class="btn-lg">Rechercher des praticiens</button>
+
+                </form>
+            {% endif %}
+        </section>
+       <section id="specialists">
+           {% if specialists is defined %}
+               <h1>D'après vos résultats, voici mes recommandations <br> Il ne vous reste plus qu'à prendre RDV sur Doctolib ! </h1>
+               <form action="" method="post" id="specialist">
+                   {% for specialist in specialists %}
+                       <div>
+                           <input type="submit" value="{{ specialist.Name }}" name="response3">
+                           <label for="">{{ specialist.Accuracy|round(1,'ceil') }} %</label>
+                       </div>
+                   {% endfor %}
+               </form>
+
+           {% endif %}
+       </section>
+
+    </main>
+{% endblock %}
+
+{% block javascripts %}
+        <script>
+            $(function () {
+                const locations = $('#locations');
+                const sublocations = $('#sublocations');
+                const symptoms = $('#symptoms');
+                const specialists = $('#specialists');
+                const button = $('.btn-lg');
+
+                locations.on('click', function () {
+                    sublocations.fadeIn(400);
+                });
+
+                sublocations.on('click', function () {
+                    symptoms.fadeIn(400);
+                });
+
+                button.on('click', function () {
+                    specialists.fadeIn(400)
+                });
+            });
+        </script>
+{% endblock %}
+

@@ -76,13 +76,39 @@ class ChatController extends AbstractController
             }
         }
 
-
-
-
-
         return $this->render('Chat/index.html.twig', [
             'hello' => $hello,
             'bodyLocations' => $bodyLocations
         ]);
+    }
+
+    /**
+     * @Route("/cheat")
+     * @param SymptomRepository $symptomRepository
+     * @param BodyLocationRepository $bodyLocationRepository
+     * @param BodySublocationRepository $bodySublocationRepository
+     * @return Response
+     */
+    public function fullIndex(SymptomRepository $symptomRepository,
+                              BodyLocationRepository $bodyLocationRepository,
+                              BodySublocationRepository $bodySublocationRepository
+    ):Response {
+
+        $hello = "Bonjour, je suis Doctobot.\n Je peux vous aider à trouver un spécialiste adapté à votre besoin, pour cela j'ai besoin de quelques informations.
+         \n\n Pour commencer, où se situent vos symptômes ?";
+
+        $bodyLocations = $bodyLocationRepository->findAll();
+        $subLocations = $bodySublocationRepository->findBy(['bodyLocation' => 6 ]);
+        $symptoms = $symptomRepository->findBy(['bodySublocation' => 22]);
+        $specialists = ApiController::getSpecialists($symptoms);
+
+        return $this->render('Cheat/index.html.twig', [
+            'hello' => $hello,
+            'bodyLocations' => $bodyLocations,
+            'subLocations' => $subLocations,
+            'symptoms' => $symptoms,
+            'specialists' => $specialists
+        ]);
+
     }
 }

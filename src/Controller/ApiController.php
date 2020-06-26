@@ -171,13 +171,13 @@ class ApiController extends AbstractController
 
     public static function getSpecialists(array $symptoms)
     {
-        $symptom1 = $symptoms[0];
-        $symptom2 = $symptoms[1];
+        $symptom1 = $symptoms[0]->getId();
+        $symptom2 = $symptoms[1]->getId();
 
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://priaid-symptom-checker-v1.p.rapidapi.com/diagnosis/specialisations?symptoms=%5B234%2C11%5D&gender=male&year_of_birth=1984&language=fr-fr",
+            CURLOPT_URL => "https://priaid-symptom-checker-v1.p.rapidapi.com/diagnosis/specialisations?symptoms=%5B$symptom1%2C$symptom2%5D&gender=male&year_of_birth=1984&language=fr-fr",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_ENCODING => "",
